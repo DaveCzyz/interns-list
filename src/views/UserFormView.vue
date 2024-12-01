@@ -32,7 +32,7 @@
         </div>
       </form>
     </div>
-    <div class="text-center text-red-700">*reqres.in/api nie aktualizuje wyników, dlatego zmiany nie będą widoczne.</div>
+    <div class="text-center text-red-700 pt-3 text-sm">*reqres.in/api nie aktualizuje wyników, dlatego zmiany nie będą widoczne.</div>
   </div>
 </template>
 
