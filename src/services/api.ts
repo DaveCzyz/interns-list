@@ -1,15 +1,11 @@
 import axios, { type AxiosError, type AxiosResponse } from 'axios';
 import { ref, type Ref } from 'vue';
+import type { User } from '@/types/user.ts';
 
+/*
+  To można też dodać do .env
+ */
 const API_URL = 'https://reqres.in/api';
-
-export interface User {
-  id?: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  avatar: string;
-}
 
 export interface UserListResponse {
   page: number;
@@ -31,7 +27,6 @@ export interface UserResponse {
   }
 }
 
-// @TODO uzupełnić o nowy enum poniżej wszystkie funkcje
 export const HTTP_METHOD = {
   GET: 'GET',
   POST: 'POST',
@@ -82,7 +77,7 @@ export const useEndpoint = <T>(endpoint: ApiEndpoint): ApiResponse<T> => {
   const error = ref<Error | null>(null);
   const data = ref<T | null>(null);
 
-  const apiCall = async (params: Record<string, string | number> = {}, payload: Record<string, any> = {}): Promise<T> => {
+  const call = async (params: Record<string, string | number> = {}, payload: Record<string, any> = {}): Promise<T> => {
     isLoading.value = true;
     error.value = null;
 
@@ -96,15 +91,15 @@ export const useEndpoint = <T>(endpoint: ApiEndpoint): ApiResponse<T> => {
       const response: AxiosResponse<T> = await axios({
         url,
         method: endpoint.method,
-        data: endpoint.method !== 'GET' ? payload : undefined,
-        params: endpoint.method === 'GET' ? payload : undefined,
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' },
+        ...(endpoint.method === HTTP_METHOD.GET
+          ? { params: payload }
+          : { data: payload }),
       });
 
       data.value = response.data;
       return response.data;
+
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const axiosError = err as AxiosError;
@@ -124,7 +119,7 @@ export const useEndpoint = <T>(endpoint: ApiEndpoint): ApiResponse<T> => {
   };
 
   return {
-    call: apiCall,
+    call,
     isLoading,
     error,
     data,
