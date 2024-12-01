@@ -40,7 +40,7 @@ interface ApiEndpoint {
 }
 
 interface ApiResponse<T> {
-  call: (params?: Record<string, string | number>, payload?: Record<string, any>) => Promise<T>;
+  call: (params?: Record<string, string | number>, payload?: Record<string, unknown>) => Promise<T>;
   isLoading: Ref<boolean>;
   error: Ref<Error | null>;
   data: Ref<T | null>;
@@ -72,14 +72,14 @@ export const endpoints = {
   },
 } as const;
 
-export const useEndpoint = <T>(endpoint: ApiEndpoint): ApiResponse<T> => {
+export const useEndpoint = <T extends Record<string, any>>(endpoint: ApiEndpoint): ApiResponse<T> => {
   const isLoading = ref(false);
   const error = ref<Error | null>(null);
-  const data = ref<T | null>(null);
+  const data = ref<T | null>(null) as Ref<T | null>;
 
   const call = async (
     params: Record<string, string | number> = {},
-    payload: Record<string, any> = {},
+    payload: Record<string, unknown> = {},
   ): Promise<T> => {
     isLoading.value = true;
     error.value = null;

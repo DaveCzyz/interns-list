@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useEndpoint, endpoints, type UserResponse } from '@/services/api';
 import { ToastStatus, useToast } from '@/hooks/useToast.ts';
 import type { User } from '@/types/user';
@@ -66,6 +66,7 @@ import Button from '@/components/shared/ButtonComponent.vue';
 import Input from '@/components/shared/InputComponent.vue';
 import { ROUTE } from '@/router';
 
+const router = useRouter();
 const route = useRoute();
 const { addToast } = useToast();
 
@@ -83,9 +84,7 @@ const { call: createUser, isLoading: isCreating } = useEndpoint<User>(endpoints.
 
 const { call: updateUser, isLoading: isUpdating } = useEndpoint<User>(endpoints.users.update);
 
-const { call: fetchUser, isLoading: isFetching } = useEndpoint<UserResponse>(
-  endpoints.users.single,
-);
+const { call: fetchUser, isLoading: isFetching } = useEndpoint<UserResponse>(endpoints.users.single);
 
 const isLoading = computed(() => isCreating.value || isUpdating.value || isFetching.value);
 
@@ -93,15 +92,15 @@ const validateForm = (): boolean => {
   errors.value = {};
 
   if (!form.value.first_name.trim()) {
-    errors.value.first_name = 'First name is required';
+    errors.value.first_name = 'Imię jest wymagane';
   }
 
   if (!form.value.last_name.trim()) {
-    errors.value.last_name = 'Last name is required';
+    errors.value.last_name = 'Nazwisko jest wymagane';
   }
 
   if (form.value.avatar && !isValidUrl(form.value.avatar)) {
-    errors.value.avatar = 'Invalid URL format';
+    errors.value.avatar = 'Nieprawidłowy format URL';
   }
 
   return Object.keys(errors.value).length === 0;
@@ -114,11 +113,13 @@ const handleSubmit = async () => {
 
   try {
     if (isEditMode.value) {
-      await updateUser({ id: route.params.id }, form.value).then(() =>
+      await updateUser({ id: String(route.params.id) }, form.value).then(() =>
         addToast('Użytkownik został zaktualizowany'),
       );
     } else {
-      await createUser({}, form.value).then(() => addToast('Dodano nowego użytkownika'));
+      await createUser({}, form.value)
+        .then(() => addToast('Dodano nowego użytkownika'))
+        .then(() => router.push(ROUTE.home));
     }
   } catch (err) {
     addToast('Wystąpił błąd. Spróbuj ponownie', ToastStatus.ERROR);
