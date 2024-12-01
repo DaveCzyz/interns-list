@@ -23,7 +23,7 @@
 
     <div v-else class="bg-white rounded-lg shadow overflow-hidden">
       <div class="overflow-auto">
-        <table class="min-w-full divide-y divide-gray-200">
+        <table v-if="filteredUsers.length" class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Użytkownik</th>
@@ -53,10 +53,11 @@
             </tr>
           </tbody>
         </table>
+        <div v-else class="px-4 py-3 text-center">Brak wyników.</div>
       </div>
 
-      <div class="bg-white px-4 py-3 border-t border-gray-200">
-        <Pagination v-if="data?.total_pages && !searchQuery" :current-page="currentPage" :total-pages="data.total_pages" @change="handlePageChange" />
+      <div v-if="data?.total_pages && !searchQuery" class="bg-white px-4 py-3 border-t border-gray-200">
+        <Pagination :current-page="currentPage" :total-pages="data.total_pages" @change="handlePageChange" />
       </div>
     </div>
   </div>
@@ -124,7 +125,7 @@ const filteredUsers = computed(() => {
   });
 });
 
-const handleDelete = async (userId?: string|number) => {
+const handleDelete = async (userId?: string | number) => {
   if (!userId) {
     return;
   }

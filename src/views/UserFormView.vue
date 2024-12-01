@@ -27,11 +27,12 @@
         <div class="flex justify-end space-x-4">
           <Button type="button" variant="danger" @click="$router.push(ROUTE.home)"> Powrót </Button>
           <Button type="submit" :loading="isLoading">
-            {{ isEditMode ? 'Aktualizuj' : 'Dodaj' }}
+            {{ isEditMode ? 'Aktualizuj' : 'Dodaj *' }}
           </Button>
         </div>
       </form>
     </div>
+    <div class="text-center text-red-700">*reqres.in/api nie aktualizuje wyników, dlatego zmiany nie będą widoczne.</div>
   </div>
 </template>
 
