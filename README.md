@@ -1,6 +1,6 @@
 # interns-list
 Recruitment task:
-[live](https://674c7b67b97b14a1d26d5037--hilarious-lamington-cfc489.netlify.app/)
+[live](https://hilarious-lamington-cfc489.netlify.app/)
 ## Clone repository
 
 ```sh
