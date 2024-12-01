@@ -27,7 +27,7 @@
         <div class="flex justify-end space-x-4">
           <Button type="button" variant="danger" @click="$router.push(ROUTE.home)"> Powrót </Button>
           <Button type="submit" :loading="isLoading">
-            {{ isEditMode ? 'Aktualizuj' : 'Dodaj *' }}
+            {{ isEditMode ? 'Aktualizuj ' : 'Dodaj' }}*
           </Button>
         </div>
       </form>
