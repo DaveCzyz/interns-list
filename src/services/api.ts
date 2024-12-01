@@ -72,15 +72,12 @@ export const endpoints = {
   },
 } as const;
 
-export const useEndpoint = <T extends Record<string, any>>(endpoint: ApiEndpoint): ApiResponse<T> => {
+export const useEndpoint = <T extends Record<string, unknown>>(endpoint: ApiEndpoint): ApiResponse<T> => {
   const isLoading = ref(false);
   const error = ref<Error | null>(null);
   const data = ref<T | null>(null) as Ref<T | null>;
 
-  const call = async (
-    params: Record<string, string | number> = {},
-    payload: Record<string, unknown> = {},
-  ): Promise<T> => {
+  const call = async (params: Record<string, string | number> = {}, payload: Record<string, unknown> = {}): Promise<T> => {
     isLoading.value = true;
     error.value = null;
 

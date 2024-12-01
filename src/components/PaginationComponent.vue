@@ -1,57 +1,22 @@
 <template>
   <div class="flex justify-center items-center space-x-1 mt-4">
-    <button
-      @click="$emit('change', currentPage - 1)"
-      :disabled="currentPage === 1"
-      class="px-3 py-1 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      ←
-    </button>
+    <button @click="$emit('change', currentPage - 1)" :disabled="currentPage === 1" class="px-3 py-1 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">←</button>
 
-    <button
-      :class="[
-        'px-3 py-1 rounded-md',
-        currentPage === 1 ? 'bg-primary text-white' : 'hover:bg-gray-100',
-      ]"
-      @click="$emit('change', 1)"
-    >
-      1
-    </button>
+    <button :class="['px-3 py-1 rounded-md', currentPage === 1 ? 'bg-primary text-white' : 'hover:bg-gray-100']" @click="$emit('change', 1)">1</button>
 
     <span v-if="startPage > 2" class="px-2">...</span>
 
-    <button
-      v-for="page in pageNumbers"
-      :key="page"
-      :class="[
-        'px-3 py-1 rounded-md',
-        currentPage === page ? 'bg-primary text-white' : 'hover:bg-gray-100',
-      ]"
-      @click="$emit('change', page)"
-    >
+    <button v-for="page in pageNumbers" :key="page" :class="['px-3 py-1 rounded-md', currentPage === page ? 'bg-primary text-white' : 'hover:bg-gray-100']" @click="$emit('change', page)">
       {{ page }}
     </button>
 
     <span v-if="endPage < totalPages - 1" class="px-2">...</span>
 
-    <button
-      v-if="totalPages > 1"
-      :class="[
-        'px-3 py-1 rounded-md',
-        currentPage === totalPages ? 'bg-primary text-white' : 'hover:bg-gray-100',
-      ]"
-      @click="$emit('change', totalPages)"
-    >
+    <button v-if="totalPages > 1" :class="['px-3 py-1 rounded-md', currentPage === totalPages ? 'bg-primary text-white' : 'hover:bg-gray-100']" @click="$emit('change', totalPages)">
       {{ totalPages }}
     </button>
 
-    <button
-      :disabled="currentPage === totalPages"
-      class="px-3 py-1 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-      @click="$emit('change', currentPage + 1)"
-    >
-      →
-    </button>
+    <button :disabled="currentPage === totalPages" class="px-3 py-1 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed" @click="$emit('change', currentPage + 1)">→</button>
   </div>
 </template>
 
@@ -80,9 +45,7 @@ const startPage = computed(() => {
   return props.currentPage - Math.floor(props.maxVisiblePages / 2);
 });
 
-const endPage = computed(() =>
-  Math.min(startPage.value + props.maxVisiblePages - 1, props.totalPages - 1),
-);
+const endPage = computed(() => Math.min(startPage.value + props.maxVisiblePages - 1, props.totalPages - 1));
 
 const pageNumbers = computed(() => {
   const pages = [];

@@ -17,11 +17,7 @@ interface Toast {
 const toasts = ref<Toast[]>([]);
 
 export const useToast = () => {
-  const addToast = (
-    message: string,
-    type: ToastType = ToastStatus.SUCCESS,
-    timeout: number = 3000,
-  ) => {
+  const addToast = (message: string, type: ToastType = ToastStatus.SUCCESS, timeout: number = 3000) => {
     const id = Date.now();
 
     toasts.value.push({

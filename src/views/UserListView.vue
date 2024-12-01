@@ -26,21 +26,9 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Użytkownik
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                E-mail
-              </th>
-              <th
-                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Akcje
-              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Użytkownik</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">E-mail</th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Akcje</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
@@ -51,9 +39,7 @@
                     <img :src="user.avatar" alt="" class="h-10 w-10 rounded-full" />
                   </div>
                   <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900">
-                      {{ user.first_name }} {{ user.last_name }}
-                    </div>
+                    <div class="text-sm font-medium text-gray-900">{{ user.first_name }} {{ user.last_name }}</div>
                   </div>
                 </div>
               </td>
@@ -61,15 +47,8 @@
                 <div class="text-sm text-gray-500">{{ user.email }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button
-                  @click="router.push(`/user/${user.id}`)"
-                  class="text-primary hover:text-primary-dark mr-3"
-                >
-                  Edytuj
-                </button>
-                <button @click="handleDelete(user.id)" class="text-red-500 hover:text-red-700">
-                  Usuń
-                </button>
+                <button @click="router.push(`/user/${user.id}`)" class="text-primary hover:text-primary-dark mr-3">Edytuj</button>
+                <button @click="handleDelete(user.id)" class="text-red-500 hover:text-red-700">Usuń</button>
               </td>
             </tr>
           </tbody>
@@ -77,12 +56,7 @@
       </div>
 
       <div class="bg-white px-4 py-3 border-t border-gray-200">
-        <Pagination
-          v-if="data?.total_pages && !searchQuery"
-          :current-page="currentPage"
-          :total-pages="data.total_pages"
-          @change="handlePageChange"
-        />
+        <Pagination v-if="data?.total_pages && !searchQuery" :current-page="currentPage" :total-pages="data.total_pages" @change="handlePageChange" />
       </div>
     </div>
   </div>
@@ -116,12 +90,7 @@ watch([currentPage, searchQuery], ([newPage, newSearch]) => {
   });
 });
 
-const {
-  call: fetchUsers,
-  isLoading,
-  error,
-  data,
-} = useEndpoint<UserListResponse>(endpoints.users.list);
+const { call: fetchUsers, isLoading, error, data } = useEndpoint<UserListResponse>(endpoints.users.list);
 
 const { call: deleteUser } = useEndpoint<void>(endpoints.users.delete);
 
@@ -151,11 +120,7 @@ const filteredUsers = computed(() => {
   return users.filter((user: User) => {
     const { first_name, last_name, email } = user;
 
-    return (
-      first_name.toLowerCase().includes(query) ||
-      last_name.toLowerCase().includes(query) ||
-      email.toLowerCase().includes(query)
-    );
+    return first_name.toLowerCase().includes(query) || last_name.toLowerCase().includes(query) || email.toLowerCase().includes(query);
   });
 });
 

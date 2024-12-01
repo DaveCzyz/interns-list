@@ -2,9 +2,7 @@
   <div class="container mx-auto px-4 py-6 max-w-2xl">
     <div class="bg-white rounded-lg shadow p-6">
       <div class="mb-6">
-        <h1 class="text-2xl font-semibold text-gray-800">
-          {{ isEditMode ? 'Edytuj' : 'Dodaj' }} użytkownika
-        </h1>
+        <h1 class="text-2xl font-semibold text-gray-800">{{ isEditMode ? 'Edytuj' : 'Dodaj' }} użytkownika</h1>
       </div>
 
       <form class="space-y-6" @submit.prevent="handleSubmit">
@@ -13,33 +11,14 @@
           <Input v-model="form.last_name" label="Nazwisko" :error="errors.last_name" required />
         </div>
 
-        <Input
-          v-model="form.avatar"
-          label="Avatar URL"
-          :error="errors.avatar"
-          placeholder="https://example.com/avatar.jpg"
-        />
+        <Input v-model="form.avatar" label="Avatar URL" :error="errors.avatar" placeholder="https://example.com/avatar.jpg" />
 
         <div v-if="form.avatar" class="flex justify-center">
           <div class="relative">
-            <img
-              :src="form.avatar"
-              alt="Avatar preview"
-              class="w-32 h-32 rounded-full object-cover"
-              @error="handleImageError"
-            />
-            <button
-              type="button"
-              @click="form.avatar = ''"
-              class="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-            >
+            <img :src="form.avatar" alt="Avatar preview" class="w-32 h-32 rounded-full object-cover" @error="handleImageError" />
+            <button type="button" @click="form.avatar = ''" class="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
@@ -113,9 +92,7 @@ const handleSubmit = async () => {
 
   try {
     if (isEditMode.value) {
-      await updateUser({ id: String(route.params.id) }, form.value).then(() =>
-        addToast('Użytkownik został zaktualizowany'),
-      );
+      await updateUser({ id: String(route.params.id) }, form.value).then(() => addToast('Użytkownik został zaktualizowany'));
     } else {
       await createUser({}, form.value)
         .then(() => addToast('Dodano nowego użytkownika'))
@@ -137,7 +114,7 @@ const isValidUrl = (string: string): boolean => {
   try {
     new URL(string);
     return true;
-  } catch (_) {
+  } catch {
     return false;
   }
 };

@@ -16,9 +16,7 @@
           'w-full px-3 py-2 rounded-md shadow-sm transition-colors',
           'focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent',
           disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white',
-          error
-            ? 'border border-red-500 focus:ring-red-500'
-            : 'border border-gray-300 focus:border-primary',
+          error ? 'border border-red-500 focus:ring-red-500' : 'border border-gray-300 focus:border-primary',
         ]"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
       />
