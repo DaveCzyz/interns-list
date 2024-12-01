@@ -1,10 +1,6 @@
 <template>
   <div class="w-full">
-    <label
-      v-if="label"
-      :for="id"
-      class="block text-sm font-medium text-gray-700 mb-1"
-    >
+    <label v-if="label" :for="id" class="block text-sm font-medium text-gray-700 mb-1">
       {{ label }}
     </label>
 
@@ -25,20 +21,14 @@
             : 'border border-gray-300 focus:border-primary',
         ]"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-       />
+      />
     </div>
 
-    <p
-      v-if="error"
-      class="mt-1 text-sm text-red-500"
-    >
+    <p v-if="error" class="mt-1 text-sm text-red-500">
       {{ error }}
     </p>
 
-    <p
-      v-else-if="hint"
-      class="mt-1 text-sm text-gray-500"
-    >
+    <p v-else-if="hint" class="mt-1 text-sm text-gray-500">
       {{ hint }}
     </p>
   </div>
@@ -46,21 +36,21 @@
 
 <script setup lang="ts">
 interface Props {
-  modelValue: string
-  label?: string
-  placeholder?: string
-  type?: string
-  id?: string
-  disabled?: boolean
-  required?: boolean
-  error?: string
-  hint?: string
+  modelValue: string;
+  label?: string;
+  placeholder?: string;
+  type?: string;
+  id?: string;
+  disabled?: boolean;
+  required?: boolean;
+  error?: string;
+  hint?: string;
 }
 
 withDefaults(defineProps<Props>(), {
   type: 'text',
   disabled: false,
-  required: false
+  required: false,
 });
 
 defineEmits(['update:modelValue']);

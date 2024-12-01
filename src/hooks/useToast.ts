@@ -8,23 +8,27 @@ export enum ToastStatus {
 type ToastType = `${ToastStatus}`;
 
 interface Toast {
-  id: number,
-  message: string,
-  type: ToastType,
-  timeout?: number,
+  id: number;
+  message: string;
+  type: ToastType;
+  timeout?: number;
 }
 
 const toasts = ref<Toast[]>([]);
 
 export const useToast = () => {
-  const addToast = (message: string, type: ToastType = ToastStatus.SUCCESS, timeout: number = 3000) => {
+  const addToast = (
+    message: string,
+    type: ToastType = ToastStatus.SUCCESS,
+    timeout: number = 3000,
+  ) => {
     const id = Date.now();
 
     toasts.value.push({
       id,
       message,
       type,
-      timeout
+      timeout,
     });
 
     if (timeout) {
@@ -35,12 +39,12 @@ export const useToast = () => {
   };
 
   const removeToast = (id: number) => {
-    toasts.value = toasts.value.filter(t => t.id !== id);
+    toasts.value = toasts.value.filter((t) => t.id !== id);
   };
 
   return {
     toasts,
     addToast,
     removeToast,
-  }
+  };
 };

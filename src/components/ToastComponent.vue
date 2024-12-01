@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="fixed top-4 right-4 z-50 flex flex-col gap-2"
-    style="min-width: 300px"
-  >
+  <div class="fixed top-4 right-4 z-50 flex flex-col gap-2" style="min-width: 300px">
     <TransitionGroup name="toast">
       <div
         v-for="toast in toasts"
@@ -10,7 +7,7 @@
         :class="[
           'p-4 rounded-lg shadow-lg transform transition-all duration-300',
           'flex items-center justify-between',
-          toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+          toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white',
         ]"
       >
         <div class="flex items-center">
@@ -29,13 +26,7 @@
             />
           </svg>
 
-          <svg
-            v-else
-            class="w-5 h-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg v-else class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -45,16 +36,8 @@
           </svg>
           <span>{{ toast.message }}</span>
         </div>
-        <button
-          @click="removeToast(toast.id)"
-          class="ml-4 hover:opacity-80"
-        >
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+        <button @click="removeToast(toast.id)" class="ml-4 hover:opacity-80">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -69,7 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import { TransitionGroup } from 'vue';
 import { useToast } from '@/hooks/useToast';
 
 const { toasts, removeToast } = useToast();

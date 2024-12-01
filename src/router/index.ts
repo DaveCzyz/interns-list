@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import UserListView from '@/views/UserListView.vue';
 import { updateDocumentMeta } from '@/router/guards';
 
 export const ROUTE = {
@@ -25,7 +24,8 @@ const routes: Array<RouteRecordRaw> = [
       title: 'Użytkownik',
     },
   },
-  { path: '/:pathMatch(.*)*',
+  {
+    path: '/:pathMatch(.*)*',
     name: ROUTE.not_found,
     redirect: () => ({
       name: ROUTE.home,

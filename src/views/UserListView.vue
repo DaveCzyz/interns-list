@@ -25,44 +25,53 @@
       <div class="overflow-auto">
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Użytkownik</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">E-mail</th>
-            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Akcje</th>
-          </tr>
+            <tr>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Użytkownik
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                E-mail
+              </th>
+              <th
+                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Akcje
+              </th>
+            </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-          <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="h-10 w-10 flex-shrink-0">
-                  <img :src="user.avatar" alt="" class="h-10 w-10 rounded-full" />
-                </div>
-                <div class="ml-4">
-                  <div class="text-sm font-medium text-gray-900">
-                    {{ user.first_name }} {{ user.last_name }}
+            <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="h-10 w-10 flex-shrink-0">
+                    <img :src="user.avatar" alt="" class="h-10 w-10 rounded-full" />
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900">
+                      {{ user.first_name }} {{ user.last_name }}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-500">{{ user.email }}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <button
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-500">{{ user.email }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button
                   @click="router.push(`/user/${user.id}`)"
                   class="text-primary hover:text-primary-dark mr-3"
-              >
-                Edytuj
-              </button>
-              <button
-                  @click="handleDelete(user.id)"
-                  class="text-red-500 hover:text-red-700"
-              >
-                Usuń
-              </button>
-            </td>
-          </tr>
+                >
+                  Edytuj
+                </button>
+                <button @click="handleDelete(user.id)" class="text-red-500 hover:text-red-700">
+                  Usuń
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -86,9 +95,9 @@ import { useEndpoint, endpoints } from '@/services/api';
 import { useToast, ToastStatus } from '@/hooks/useToast.ts';
 import type { UserListResponse } from '@/services/api';
 import type { User } from '@/types/user.ts';
-import Button from '@/components/shared/Button.vue';
+import Button from '@/components/shared/ButtonComponent.vue';
 import SearchBar from '@/components/SearchBar.vue';
-import Pagination from '@/components/Pagination.vue';
+import Pagination from '@/components/PaginationComponent.vue';
 import { ROUTE } from '@/router';
 
 const route = useRoute();
@@ -102,8 +111,8 @@ watch([currentPage, searchQuery], ([newPage, newSearch]) => {
   router.push({
     query: {
       ...(newPage > 1 && { page: newPage.toString() }),
-      ...(newSearch && { search: newSearch })
-    }
+      ...(newSearch && { search: newSearch }),
+    },
   });
 });
 
@@ -114,9 +123,7 @@ const {
   data,
 } = useEndpoint<UserListResponse>(endpoints.users.list);
 
-const {
-  call: deleteUser,
-} = useEndpoint<void>(endpoints.users.delete);
+const { call: deleteUser } = useEndpoint<void>(endpoints.users.delete);
 
 const loadUsers = async () => {
   try {
@@ -133,9 +140,7 @@ const handlePageChange = async (page: number) => {
 };
 
 const filteredUsers = computed(() => {
-  const users = Array.isArray(data.value?.data)
-    ? data.value.data
-    : [];
+  const users = Array.isArray(data.value?.data) ? data.value.data : [];
 
   const query = searchQuery.value?.toLowerCase();
 
@@ -154,21 +159,22 @@ const filteredUsers = computed(() => {
   });
 });
 
-const handleDelete = async (userId: User['id']) => {
+const handleDelete = async (userId: string) => {
   if (!confirm('Czy na pewno chcesz usunąć użytkownika?')) {
     return;
   }
 
   try {
-    await deleteUser({ id: userId })
-      .then(() => addToast('Użytkownik został usunięty'));
+    await deleteUser({ id: userId }).then(() => addToast('Użytkownik został usunięty'));
     await loadUsers();
   } catch (err) {
     addToast('Coś poszło nie tak!', ToastStatus.ERROR);
+    console.error(err);
   }
-}
+};
 
-watch(() => route.query,
+watch(
+  () => route.query,
   (newQuery) => {
     const { page, search } = newQuery;
 
@@ -180,7 +186,7 @@ watch(() => route.query,
       searchQuery.value = String(search);
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 onMounted(async () => {

@@ -16,7 +16,7 @@ export interface UserListResponse {
   support?: {
     url: string;
     text: string;
-  }
+  };
 }
 
 export interface UserResponse {
@@ -24,7 +24,7 @@ export interface UserResponse {
   support?: {
     url: string;
     text: string;
-  }
+  };
 }
 
 export const HTTP_METHOD = {
@@ -68,8 +68,8 @@ export const endpoints = {
     delete: {
       path: '/users/:id',
       method: HTTP_METHOD.DELETE,
-    }
-  }
+    },
+  },
 } as const;
 
 export const useEndpoint = <T>(endpoint: ApiEndpoint): ApiResponse<T> => {
@@ -77,7 +77,10 @@ export const useEndpoint = <T>(endpoint: ApiEndpoint): ApiResponse<T> => {
   const error = ref<Error | null>(null);
   const data = ref<T | null>(null);
 
-  const call = async (params: Record<string, string | number> = {}, payload: Record<string, any> = {}): Promise<T> => {
+  const call = async (
+    params: Record<string, string | number> = {},
+    payload: Record<string, any> = {},
+  ): Promise<T> => {
     isLoading.value = true;
     error.value = null;
 
@@ -92,14 +95,11 @@ export const useEndpoint = <T>(endpoint: ApiEndpoint): ApiResponse<T> => {
         url,
         method: endpoint.method,
         headers: { 'Content-Type': 'application/json' },
-        ...(endpoint.method === HTTP_METHOD.GET
-          ? { params: payload }
-          : { data: payload }),
+        ...(endpoint.method === HTTP_METHOD.GET ? { params: payload } : { data: payload }),
       });
 
       data.value = response.data;
       return response.data;
-
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const axiosError = err as AxiosError;
@@ -123,6 +123,6 @@ export const useEndpoint = <T>(endpoint: ApiEndpoint): ApiResponse<T> => {
     isLoading,
     error,
     data,
-    endpoint
+    endpoint,
   };
 };

@@ -11,7 +11,7 @@
     <button
       :class="[
         'px-3 py-1 rounded-md',
-        currentPage === 1 ? 'bg-primary text-white' : 'hover:bg-gray-100'
+        currentPage === 1 ? 'bg-primary text-white' : 'hover:bg-gray-100',
       ]"
       @click="$emit('change', 1)"
     >
@@ -25,7 +25,7 @@
       :key="page"
       :class="[
         'px-3 py-1 rounded-md',
-        currentPage === page ? 'bg-primary text-white' : 'hover:bg-gray-100'
+        currentPage === page ? 'bg-primary text-white' : 'hover:bg-gray-100',
       ]"
       @click="$emit('change', page)"
     >
@@ -38,7 +38,7 @@
       v-if="totalPages > 1"
       :class="[
         'px-3 py-1 rounded-md',
-        currentPage === totalPages ? 'bg-primary text-white' : 'hover:bg-gray-100'
+        currentPage === totalPages ? 'bg-primary text-white' : 'hover:bg-gray-100',
       ]"
       @click="$emit('change', totalPages)"
     >
@@ -59,9 +59,9 @@
 import { computed } from 'vue';
 
 interface Props {
-  currentPage: number
-  totalPages: number
-  maxVisiblePages?: number
+  currentPage: number;
+  totalPages: number;
+  maxVisiblePages?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -80,7 +80,9 @@ const startPage = computed(() => {
   return props.currentPage - Math.floor(props.maxVisiblePages / 2);
 });
 
-const endPage = computed(() => (Math.min(startPage.value + props.maxVisiblePages - 1, props.totalPages - 1)));
+const endPage = computed(() =>
+  Math.min(startPage.value + props.maxVisiblePages - 1, props.totalPages - 1),
+);
 
 const pageNumbers = computed(() => {
   const pages = [];
