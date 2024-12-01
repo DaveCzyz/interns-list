@@ -78,7 +78,7 @@ const validateForm = (): boolean => {
     errors.value.last_name = 'Nazwisko jest wymagane';
   }
 
-  if (form.value.avatar && !isValidUrl(form.value.avatar)) {
+  if (form.value.avatar && !isValidUrl(form.value.avatar)) {a
     errors.value.avatar = 'Nieprawidłowy format URL';
   }
 
@@ -106,7 +106,7 @@ const handleSubmit = async () => {
 
 const handleImageError = (e: Event) => {
   const img = e.target as HTMLImageElement;
-  img.src = '/placeholder-avatar.png'; // Zastąp domyślnym avatarem @TODO
+  img.src = 'https://innostudio.de/fileuploader/images/default-avatar.png';
   errors.value.avatar = 'Failed to load image';
 };
 
