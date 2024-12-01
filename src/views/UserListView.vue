@@ -72,7 +72,7 @@
 
       <div class="bg-white px-4 py-3 border-t border-gray-200">
         <Pagination
-          v-if="data?.total_pages"
+          v-if="data?.total_pages && !searchQuery"
           :current-page="currentPage"
           :total-pages="data.total_pages"
           @change="handlePageChange"
@@ -83,20 +83,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import {ref, computed, watch, onMounted} from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useEndpoint, endpoints } from '@/services/api';
 import { useToast, TOAST_STATUS } from '@/hooks/useToast.ts';
 import type { UserListResponse } from '@/services/api';
+import { User } from '@/types/user.ts';
 import Button from '@/components/shared/Button.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import Pagination from '@/components/Pagination.vue';
 
+const route = useRoute();
 const router = useRouter();
-const currentPage = ref(1);
-const searchQuery = ref('');
+const currentPage = ref(Number(route.query.page) || 1);
+const searchQuery = ref(route.query.search?.toString() || '');
 
 const { addToast } = useToast();
+
+watch([currentPage, searchQuery], ([newPage, newSearch]) => {
+  router.push({
+    query: {
+      ...(newPage > 1 && { page: newPage.toString() }),
+      ...(newSearch && { search: newSearch })
+    }
+  });
+});
 
 const {
   call: fetchUsers,
@@ -114,6 +125,7 @@ const loadUsers = async () => {
     await fetchUsers({}, { page: currentPage.value });
   } catch (err) {
     addToast('loadUsers failed,', TOAST_STATUS.ERROR);
+    console.error(err);
   }
 };
 
@@ -136,14 +148,15 @@ const filteredUsers = computed(() => {
   }
 
   const query = searchQuery.value.toLowerCase();
-  return users.filter(user =>
+
+  return users.filter((user: User) =>
     user.first_name.toLowerCase().includes(query) ||
     user.last_name.toLowerCase().includes(query) ||
     user.email.toLowerCase().includes(query)
   );
 });
 
-const handleDelete = async (userId: number) => {
+const handleDelete = async (userId: Pick<'id', User>) => {
   if (!confirm('Are you sure you want to delete this user?')) {
     return;
   }
@@ -156,7 +169,22 @@ const handleDelete = async (userId: number) => {
   }
 }
 
-loadUsers();
+watch(
+  () => route.query,
+  (newQuery) => {
+    if (newQuery.page) {
+      currentPage.value = Number(newQuery.page);
+    }
+    if (newQuery.search !== undefined) {
+      searchQuery.value = newQuery.search.toString();
+    }
+  },
+  { immediate: true }
+);
+
+onMounted(async () => {
+  await loadUsers();
+});
 
 // @TODO:
 // Formularz dodawania/edycji użytkownika
