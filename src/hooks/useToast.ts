@@ -1,11 +1,11 @@
 import { ref } from 'vue';
 
-export enum TOAST_STATUS {
+export enum ToastStatus {
   SUCCESS = 'success',
   ERROR = 'error',
 }
 
-type ToastType = `${TOAST_STATUS}`;
+type ToastType = `${ToastStatus}`;
 
 interface Toast {
   id: number,
@@ -17,7 +17,7 @@ interface Toast {
 const toasts = ref<Toast[]>([]);
 
 export const useToast = () => {
-  const addToast = (message: string, type: ToastType = TOAST_STATUS.SUCCESS, timeout: number = 3000) => {
+  const addToast = (message: string, type: ToastType = ToastStatus.SUCCESS, timeout: number = 3000) => {
     const id = Date.now();
 
     toasts.value.push({
@@ -29,8 +29,8 @@ export const useToast = () => {
 
     if (timeout) {
       setTimeout(() => {
-        removeToast(id)
-      }, timeout)
+        removeToast(id);
+      }, timeout);
     }
   };
 
@@ -41,6 +41,6 @@ export const useToast = () => {
   return {
     toasts,
     addToast,
-    removeToast
+    removeToast,
   }
 };
