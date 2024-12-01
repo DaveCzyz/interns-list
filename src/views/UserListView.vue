@@ -92,7 +92,7 @@ watch([currentPage, searchQuery], ([newPage, newSearch]) => {
 
 const { call: fetchUsers, isLoading, error, data } = useEndpoint<UserListResponse>(endpoints.users.list);
 
-const { call: deleteUser } = useEndpoint<void>(endpoints.users.delete);
+const { call: deleteUser } = useEndpoint<{}>(endpoints.users.delete);
 
 const loadUsers = async () => {
   try {
@@ -124,13 +124,17 @@ const filteredUsers = computed(() => {
   });
 });
 
-const handleDelete = async (userId: string) => {
+const handleDelete = async (userId?: string|number) => {
+  if (!userId) {
+    return;
+  }
+
   if (!confirm('Czy na pewno chcesz usunąć użytkownika?')) {
     return;
   }
 
   try {
-    await deleteUser({ id: userId }).then(() => addToast('Użytkownik został usunięty'));
+    await deleteUser({ id: String(userId) }).then(() => addToast('Użytkownik został usunięty'));
     await loadUsers();
   } catch (err) {
     addToast('Coś poszło nie tak!', ToastStatus.ERROR);
@@ -157,6 +161,4 @@ watch(
 onMounted(async () => {
   await loadUsers();
 });
-
-// Page 2 -> add user -> powrtó na page 2 a nie na początek
 </script>

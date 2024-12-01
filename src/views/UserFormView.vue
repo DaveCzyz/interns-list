@@ -78,7 +78,7 @@ const validateForm = (): boolean => {
     errors.value.last_name = 'Nazwisko jest wymagane';
   }
 
-  if (form.value.avatar && !isValidUrl(form.value.avatar)) {a
+  if (form.value.avatar && !isValidUrl(form.value.avatar)) {
     errors.value.avatar = 'Nieprawidłowy format URL';
   }
 

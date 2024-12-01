@@ -1,7 +1,6 @@
 <template>
   <div class="fixed top-4 right-4 z-50 flex flex-col gap-2" style="min-width: 300px">
-    <TransitionGroup name="toast">
-      <div
+    <div
         v-for="toast in toasts"
         :key="toast.id"
         :class="['p-4 rounded-lg shadow-lg transform transition-all duration-300', 'flex items-center justify-between', toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white']"
@@ -22,7 +21,6 @@
           </svg>
         </button>
       </div>
-    </TransitionGroup>
   </div>
 </template>
 
@@ -31,20 +29,3 @@ import { useToast } from '@/hooks/useToast';
 
 const { toasts, removeToast } = useToast();
 </script>
-
-<style scoped>
-.toast-enter-active,
-.toast-leave-active {
-  transition: all 0.3s ease;
-}
-
-.toast-enter-from {
-  opacity: 0;
-  transform: translateX(30px);
-}
-
-.toast-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-</style>
