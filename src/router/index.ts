@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import { updateDocumentMeta } from '@/router/guards';
 
 export const ROUTE = {
   home: '/',
@@ -12,17 +11,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: ROUTE.home,
     component: () => import('@/views/UserListView.vue'),
-    meta: {
-      title: 'List użytkowników',
-    },
   },
   {
     path: '/user/:id?',
     name: ROUTE.user,
     component: () => import('@/views/UserFormView.vue'),
-    meta: {
-      title: 'Użytkownik',
-    },
   },
   {
     path: '/:pathMatch(.*)*',
@@ -40,7 +33,5 @@ const router = createRouter({
     return { top: 0 };
   },
 });
-
-router.beforeEach(updateDocumentMeta);
 
 export default router;

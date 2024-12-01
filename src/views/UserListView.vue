@@ -193,11 +193,5 @@ onMounted(async () => {
   await loadUsers();
 });
 
-// @TODO:
-// Formularz dodawania/edycji użytkownika
-// Potwierdzenie przed usunięciem - confirmation wrapper
-// Testy
-// Mobile - akcje się chowają.
 // Page 2 -> add user -> powrtó na page 2 a nie na początek
-// dynamic meta
 </script>
