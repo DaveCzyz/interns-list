@@ -93,7 +93,7 @@ watch([currentPage, searchQuery], ([newPage, newSearch]) => {
 
 const { call: fetchUsers, isLoading, error, data } = useEndpoint<UserListResponse>(endpoints.users.list);
 
-const { call: deleteUser } = useEndpoint<{}>(endpoints.users.delete);
+const { call: deleteUser } = useEndpoint<object>(endpoints.users.delete);
 
 const loadUsers = async () => {
   try {

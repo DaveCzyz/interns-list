@@ -3,7 +3,7 @@ import { ref, type Ref } from 'vue';
 import type { User } from '@/types/user.ts';
 
 /*
-  To można też dodać do .env
+  To można do .env
  */
 const API_URL = 'https://reqres.in/api';
 
@@ -27,16 +27,16 @@ export interface UserResponse {
   };
 }
 
-export const HTTP_METHOD = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  DELETE: 'DELETE',
-} as const;
+export enum HttpMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}
 
 interface ApiEndpoint {
   path: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method: HttpMethod;
 }
 
 interface ApiResponse<T> {
@@ -51,23 +51,23 @@ export const endpoints = {
   users: {
     list: {
       path: '/users',
-      method: HTTP_METHOD.GET,
+      method: HttpMethod.GET,
     },
     single: {
       path: '/users/:id',
-      method: HTTP_METHOD.GET,
+      method: HttpMethod.GET,
     },
     create: {
       path: '/users',
-      method: HTTP_METHOD.POST,
+      method: HttpMethod.POST,
     },
     update: {
       path: '/users/:id',
-      method: HTTP_METHOD.PUT,
+      method: HttpMethod.PUT,
     },
     delete: {
       path: '/users/:id',
-      method: HTTP_METHOD.DELETE,
+      method: HttpMethod.DELETE,
     },
   },
 } as const;
@@ -92,7 +92,7 @@ export const useEndpoint = <T extends Record<string, any>>(endpoint: ApiEndpoint
         url,
         method: endpoint.method,
         headers: { 'Content-Type': 'application/json' },
-        ...(endpoint.method === HTTP_METHOD.GET ? { params: payload } : { data: payload }),
+        ...(endpoint.method === HttpMethod.GET ? { params: payload } : { data: payload }),
       });
 
       data.value = response.data;
